@@ -55,7 +55,7 @@ export default function Memorama() {
  
   useEffect(() => {
     
-    // mezclarCartas();
+    mezclarCartas();
   }, []);
 
   const switchTurns = () => {
@@ -181,10 +181,10 @@ export default function Memorama() {
 
   };
   const findWinner = () => {
-    // Encuentra al jugador que tiene isTurn: true
+    
     const currentPlayer = players.find(player => player.isTurn);
   
-    // Suma 1 punto al jugador actual si existe
+   
     if (currentPlayer) {
       const updatedPlayers = players.map(player =>
         player.id === currentPlayer.id
@@ -192,17 +192,17 @@ export default function Memorama() {
           : player
       );
   
-      // Actualiza el estado de los jugadores con los puntos actualizados
+     
       setPlayers(updatedPlayers);
     }
   
-    // Encuentra al ganador
+    
     const gameWinner = players.reduce((max, player) =>
       player.score > max.score ? player : max,
       players[0]
     );
   
-    // Actualiza el estado del ganador
+   
     setWinner(gameWinner);
   };
 
@@ -222,7 +222,7 @@ export default function Memorama() {
           </div>
         ))}
       </div>
-    <button className="bg-blue-500 hover:bg-blue-700 text-white mb-10 font-bold py-2 px-4 rounded border border-blue-700" onClick={reiniciarJuego}>Restart Game</button>
+    <button className="bg-blue-500 hover:bg-blue-700 transform hover:scale-115 text-white mb-10 font-bold py-4 px-8 rounded border border-blue-700 text-lg" onClick={reiniciarJuego}>Restart Game</button>
       <Board cards={cards} onCardClick={handleCardClick}></Board>
     </div>
     <Modal
