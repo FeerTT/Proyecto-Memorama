@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -17,11 +18,318 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #1a202c;  
+  color: #ffffff; 
+}
+
+@keyframes matchAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.matched {
+  animation: matchAnimation 1s ease-out;
+}
+
+.card.covered {
+  background-color: #2d3748;  /* Puedes ajustar el color según tus preferencias */
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(100px, 1fr));
+  gap: 16px;
+  max-height: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .board {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+}
+
+
+.h2Ganador{
+    
+  font-size: 25px;   
+  text-align: center;
+  margin: 20px 0;
+}
+
+
+.modal {
+ display: flex;
+ justify-items: center;
+ align-content: center;
+ flex-wrap: wrap;
+ flex-direction: column;
+  
+  background-color: white;
+  color: black;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 80%;
+  max-height: 80vh;
+  overflow: auto;
+  
+}
+
+.player-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+/* Estilos para cada jugador individual */
+.player {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  text-align: center;
+  background-color: darkcyan;
+}
+
+/* Estilos específicos para el nombre del jugador */
+.player-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Estilos específicos para el puntaje del jugador */
+.player-score {
+  font-size: 16px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-button {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4CAF50; 
+  color: white; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  border: none; 
+  border-radius: 4px; 
+  cursor: pointer; 
+}
+
+
+.close-button:hover {
+  background-color: #45a049; 
+}
+
+.buttonComenzar{
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.buttonComenzar:hover{
+  background-color: #45a049;
+}
+.h2cantidad{
+  
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+ 
+}
+#numPlayersContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#numPlayers {
+  padding: 8px;
+  font-size: 1rem;
+  background: black;
+  color: white; /* Puedes añadir estilos de texto adecuados */
+}
+.labelnumber {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+
+
+.logo-redes {
+  background-color:none; /* Cambia el color de fondo según tus preferencias */
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column-reverse; 
+  align-items: center;
+  justify-content: flex-start;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 16px;
+}
+
+/* Estilos para el ícono de redes sociales cuando está en estado :hover */
+.logo-redes:hover {
+  color: #ff9900; /* Cambia el color a tu elección */
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+
+.social-media-container {
+  display: flex;
+  justify-content: flex-start;
+  position: absolute;
+  /* top: 50%; */
+  width: 100%;
+  height: 100%;
+  right: 20px; 
+}
+
+.divRedes {
+  position: absolute;
+}
+
+
+.social-media-icons {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.social-media-icon {
+  margin-bottom: 10px; /* Ajusta según tu preferencia para separar los iconos */
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.social-media-icon:hover {
+  transform: scale(1.2);
+}
+
+
+
+/*AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA*/
+
+@keyframes float {
+  0% {
+    transform: translate(-110vw, -40%) rotate(0);
+  }
+  100% {
+    transform: translate(55vw, -60%) rotate(500deg);
+  }
+}
+
+@media (prefers-reduced-motion) {
+  .space::before {
+    animation: none !important;
+  }
+}
+
+.space {
+  font-size: 1vmin;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background:
+    /* planet */
+    radial-gradient(50% 25% at 7% 3%, #e70 8%, #0000 0),
+    radial-gradient(circle at 17% 10%, #e70 2%, #0000 0),
+    radial-gradient(circle at 20% 2%, #e70 3.5%, #0000 0),
+    radial-gradient(circle at 10% 0, darkorange 15%, #0000 0),
+    /* stars */
+    radial-gradient(circle at 20% 20%, #fff8 0.25%, #0000 0),
+    radial-gradient(circle at 40% 34%, #fff8 0.5%, #0000 0) 20% 50% / 60% 60%,
+    radial-gradient(circle at 40% 34%, #fff8 0.5%, #0000 0) 50% 20% / 60% 60%,
+    radial-gradient(circle at 30% 38%, #fff8 0.25%, #0000 0),
+    radial-gradient(circle at 40% 34%, #fff8 0.65%, #0000 0) 10% -10% / 50% 50%,
+    /* base */
+    linear-gradient(#0000, #0002),
+    #123;
+  
+  &::before {
+    animation: float 30s linear infinite;
+    content: "";
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60em;
+    height: 60em;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%);
+    background:
+      /* head */
+      radial-gradient(circle at 54% 11%, #cffc 2%, #0000 0),
+      radial-gradient(circle at 59% 14%, #cffc 3%, #0000 0),
+      radial-gradient(50% 45% at 50% 50%, #123 99%, #0000) 50% 6.6% / 31% 25%,
+      radial-gradient(50% 50% at 50% 50%, #aaa 99%, #0000) 50% 5% / 32% 25%,
+      radial-gradient(farthest-side at 50% 0, #889 99%, #0000) 50% 20% / 32% 16%,
+      radial-gradient(closest-side circle at 50% 16%, #eee 99%, #eee0),
+      radial-gradient(40% 50% at 35% 17%, #eee 10%, #0000 0),
+      radial-gradient(40% 50% at 65% 17%, #eee 10%, #0000 0),
+      /* body */
+      linear-gradient(#aaa 0 0) 40% 64.5% / 5% 8%,
+      linear-gradient(#aaa 0 0) 60% 64.5% / 5% 8%,
+      linear-gradient(#ccc 0 0) 50% 64% / 35.5% 6%,
+      linear-gradient(orange 0 0) 46% 46% / 3% 7%,
+      radial-gradient(circle at 54% 45%, red 1%, #0000 0),
+      radial-gradient(circle at 54% 48%, green 1%, #0000 0),
+      linear-gradient(#ccc 0 0) 50% 46% / 14% 10%,
+      radial-gradient(85% 25% at 50% 67%, #eee 20.25%, #0000 20.5%),
+      radial-gradient(farthest-side at 50% 100%, #eee 99%, #0000) 50% 45% / 35% 40%,  
+      /* arms */
+      radial-gradient(closest-side circle at 18% 8%, #ccc 99%, #0000 0),
+      radial-gradient(farthest-side at 80% 20%, #0000 65%, #eee 0 99%, #0000) 18% 18% / 30% 27%,
+      radial-gradient(circle at 82% 64%, #ccc 7%, #0000 0),
+      radial-gradient(farthest-side at 30% 80%, #0000 67%, #eee 0 99%, #0000) 82% 43% / 36% 29%,
+      /* legs */
+      linear-gradient(12deg, #0000 50%, #0002 0 55%, #0000 0) 32% 90% / 11% 10%,
+      linear-gradient(-14deg, #0000 50%, #0002 0 55%, #0000 0) 71.5% 89% / 13% 10%,
+      linear-gradient(12deg, #ccc 55%, #0000 0) 23.5% 100% / 22.5% 10%,
+      linear-gradient(-12deg, #ccc 50%, #0000 0) 83.75% 98% / 21% 10%,
+      radial-gradient(farthest-side at 100% 80%, #0000 55%, #eee 0 99%, #0000) 37.5% 100% / 25% 50%,
+      linear-gradient(65deg, #0000 30%, #eee 0 55%, #0000 0) 85% 97% / 40% 35%,
+      radial-gradient(140% 120% at 80% 93%, #eee 5%, #0000 0),
+      radial-gradient(140% 120% at 25% 95%, #eee 5%, #0000 0),
+      /* backpack */
+      radial-gradient( 66% 66%, #89a 99%, #0000 0) 50% 48% / 39% 40%,
+      #f000;
+    background-repeat: no-repeat;
+  }
 }
