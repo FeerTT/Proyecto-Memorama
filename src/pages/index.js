@@ -7,39 +7,44 @@ import { useEffect } from "react";
 import SocialMediaBox from "@/components/redes";
 
 export default function Memorama() {
+  
+  const [mode, setMode] = useState('normal'); // Modo por defecto: normal
+  const generateCards = (mode) => {
+    let pairs = 0;
+
+    switch (mode) {
+      case 'facil':
+        pairs = 5;
+        break;
+      case 'normal':
+        pairs = 10;
+        break;
+      case 'extremo':
+      default:
+        pairs = 15;
+    }
+
+    const cardValues = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
+    let generatedCards = [];
+
+    for (let i = 1; i <= pairs; i++) {
+      const randomValue = cardValues[i - 1];
+      generatedCards.push(
+        { id: i, value: randomValue, isFlipped: false, image: `/img/img${i}.jpg` },
+        { id: i + pairs, value: randomValue, isFlipped: false, image: `/img/img${i}.jpg` }
+      );
+    }
+
+    return generatedCards;
+  };
+  useEffect(() => {
+    const initialCards = generateCards(mode);
+    setCards(initialCards);
+    mezclarCartas();
+  }, [mode]);
   const [showModal, setShowModal] = useState(false);
-  const [cards, setCards] = useState([
-    { id: 1, value: 'A', isFlipped: false, image:'/img/img1.jpg'  },
-    { id: 2, value: 'B', isFlipped: false, image: '/img/img2.jpg' },
-    { id: 3, value: 'A', isFlipped: false, image:'/img/img1.jpg'  },
-    { id: 4, value: 'B', isFlipped: false, image: '/img/img2.jpg' },
-    { id: 5, value: 'C', isFlipped: false, image: '/img/img3.jpg' },
-    { id: 6, value: 'C', isFlipped: false, image: '/img/img3.jpg' },
-    { id: 7, value: 'D', isFlipped: false, image: '/img/img4.jpg' },
-    { id: 8, value: 'D', isFlipped: false, image: '/img/img4.jpg' },
-    { id: 9, value: 'E', isFlipped: false, image: '/img/img5.jpg' },
-    { id: 10, value: 'E', isFlipped: false, image: '/img/img5.jpg' },
-    { id: 11, value: 'F', isFlipped: false, image: '/img/img6.jpg' },
-    { id: 12, value: 'F', isFlipped: false, image: '/img/img6.jpg' },
-    { id: 13, value: 'G', isFlipped: false, image: '/img/img7.jpg' },
-    { id: 14, value: 'G', isFlipped: false, image: '/img/img7.jpg' },
-    { id: 15, value: 'H', isFlipped: false, image: '/img/img8.jpg' },
-    { id: 16, value: 'H', isFlipped: false, image: '/img/img8.jpg' },
-    { id: 17, value: 'I', isFlipped: false, image: '/img/img9.jpg' },
-    { id: 18, value: 'I', isFlipped: false, image: '/img/img9.jpg' },
-    { id: 19, value: 'J', isFlipped: false, image: '/img/img10.jpg' },
-    { id: 20, value: 'J', isFlipped: false, image: '/img/img10.jpg' },
-    { id: 21, value: 'K', isFlipped: false, image: '/img/img11.jpg' },
-    { id: 22, value: 'K', isFlipped: false, image: '/img/img11.jpg' },
-    { id: 23, value: 'L', isFlipped: false, image: '/img/img12.jpg' },
-    { id: 24, value: 'L', isFlipped: false, image: '/img/img12.jpg' },
-    { id: 25, value: 'M', isFlipped: false, image: '/img/img13.jpg' },
-    { id: 26, value: 'M', isFlipped: false, image: '/img/img13.jpg' },
-    { id: 27, value: 'N', isFlipped: false, image: '/img/img14.jpg' },
-    { id: 28, value: 'N', isFlipped: false, image: '/img/img14.jpg' },
-    { id: 29, value: 'O', isFlipped: false, image: '/img/img15.jpg' },
-    { id: 30, value: 'O', isFlipped: false, image: '/img/img15.jpg' },
-  ]);
+  const [cards, setCards] = useState(generateCards(mode));
+
   const [selectedCards, setSelectedCards] = useState([]);
 
   const [players, setPlayers] = useState([
@@ -51,12 +56,6 @@ export default function Memorama() {
   const [currentPlayer, setCurrentPlayer] = useState(0);
   const [numPlayers, setNumPlayers] = useState(1);
   const [winner, setWinner] = useState(null);
-
- 
-  useEffect(() => {
-    
-    mezclarCartas();
-  }, []);
 
   const switchTurns = () => {
     setPlayers(prevPlayers =>
@@ -164,46 +163,63 @@ export default function Memorama() {
       setShowModal(false);
     }
   }
-
   const reiniciarJuego = () => {
+    // Mezclar las cartas
     const cartasMezcladas = [...cards].sort(() => Math.random() - 0.5);
-
-   
-    const cartasOcultas = cartasMezcladas.map(card => ({ ...card, isFlipped: false }));
-    
-    setCards(cartasOcultas);
+  
+    // Restablecer el estado de las cartas
+    const cartasReiniciadas = cartasMezcladas.map(card => ({ ...card, isFlipped: false, isMatched: false }));
+  
+    // Restablecer el estado de los jugadores
     const jugadoresReiniciados = players.map((jugador) => ({
       ...jugador,
       score: 0,
     }));
+  
+    // Restablecer el estado del ganador
+    setCards(cartasReiniciadas);
     setPlayers(jugadoresReiniciados);
     setWinner(null);
-
   };
-  const findWinner = () => {
-    
-    const currentPlayer = players.find(player => player.isTurn);
+  // const reiniciarJuego = () => {
+  //   const cartasMezcladas = [...cards].sort(() => Math.random() - 0.5);
+  //   const cartasOcultas = cartasMezcladas.map(card => ({ ...card, isFlipped: false }));
+  //   setCards(cartasOcultas);
+  //   const jugadoresReiniciados = players.map((jugador) => ({
+  //     ...jugador,
+  //     score: 0,
+  //   }));
+  //   setPlayers(jugadoresReiniciados);
+  //   setWinner(null);
+  // };
+
+
   
-   
+  const findWinner = () => {
+    const currentPlayer = players.find(player => player.isTurn);
     if (currentPlayer) {
       const updatedPlayers = players.map(player =>
         player.id === currentPlayer.id
           ? { ...player, score: player.score + 1 }
           : player
       );
-  
-     
       setPlayers(updatedPlayers);
     }
-  
-    
     const gameWinner = players.reduce((max, player) =>
       player.score > max.score ? player : max,
       players[0]
     );
-  
-   
     setWinner(gameWinner);
+  };
+
+
+
+
+  // Función para cambiar el modo de juego
+  const handleModeChange = (newMode) => {
+    setMode(newMode);
+    const newCards = generateCards(newMode);
+    setCards(newCards);
   };
 
   return (
@@ -211,8 +227,29 @@ export default function Memorama() {
       
     <div className="text-center mt-8">
     <h1 className="text-3xl font-bold mb-6">Memory Game</h1>
-    
-    
+    <div className="space-x-2">
+  <button
+    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded text-lg"
+    onClick={() => handleModeChange('facil')}
+  >
+    Easy Mode
+  </button>
+  <button
+    className="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded text-lg"
+    onClick={() => handleModeChange('normal')}
+  >
+    Normal
+  </button>
+  <button
+    className="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-8 rounded text-lg"
+    onClick={() => handleModeChange('extremo')}
+  >
+    Extreme
+  </button>
+</div>
+    <br></br>
+    <br></br>
+    <br></br>
   <ModalPlayers onSelectPlayers={handleSelectPlayers}/>
         <div className="player-list">
         {players.map((player) => (
@@ -222,8 +259,9 @@ export default function Memorama() {
           </div>
         ))}
       </div>
+      
     <button className="bg-blue-500 hover:bg-blue-700 transform hover:scale-115 text-white mb-10 font-bold py-4 px-8 rounded border border-blue-700 text-lg" onClick={reiniciarJuego}>Restart Game</button>
-      <Board cards={cards} onCardClick={handleCardClick}></Board>
+      <Board cards={cards} mode={mode} onCardClick={handleCardClick}></Board>
     </div>
     <Modal
         isOpen={showModal}
@@ -236,7 +274,7 @@ export default function Memorama() {
         <button className="close-button" onClick={closeModal}>Close</button>
       </Modal>
       <footer>
-      <p className="text-center mt-8" style={{ fontFamily: 'Montserrat, sans-serif', color: '#888', fontSize: '14px' }}>Website designed and developed by: Fernando T. Trillo</p>
+      <p className="text-center mt-20" style={{ fontFamily: 'Montserrat, sans-serif', color: '#888', fontSize: '14px' }}>Website designed and developed by: Fernando T. Trillo</p>
       <SocialMediaBox></SocialMediaBox>
       </footer>
     </main>
