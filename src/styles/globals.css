@@ -37,7 +37,10 @@ body {
 .matched {
   animation: matchAnimation 1s ease-out;
 }
-
+.card{
+  border-width: 1px;
+  border-color: 'linear-gradient(45deg, #ff0000, #00ff00)', ;
+}
 .card.covered {
   background-color: #2d3748;  /* Puedes ajustar el color según tus preferencias */
 }
@@ -96,7 +99,7 @@ body {
   justify-content: center;
 }
 
-/* Estilos para cada jugador individual */
+
 .player {
   margin-bottom: 10px;
   padding: 10px;
@@ -188,6 +191,7 @@ body {
 
 
 .logo-redes {
+  -webkit-tap-highlight-color: transparent;
   background-color:none; /* Cambia el color de fondo según tus preferencias */
   padding: 10px;
   border-radius: 5px;
@@ -200,11 +204,12 @@ body {
   bottom: 0;
   right: 0;
   margin: 16px;
+  z-index: 9999;
 }
 
 /* Estilos para el ícono de redes sociales cuando está en estado :hover */
 .logo-redes:hover {
-  color: #ff9900; /* Cambia el color a tu elección */
+  color: hsl(204, 100%, 59%);  /* Cambia el color a tu elección */
   cursor: pointer;
   text-decoration: underline;
 }

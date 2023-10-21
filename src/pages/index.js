@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import SocialMediaBox from "@/components/redes";
 
 export default function Memorama() {
-  
+  const [updatedPlayers, setUpdatedPlayers] = useState([]);
   const [mode, setMode] = useState('normal'); // Modo por defecto: normal
   const generateCards = (mode) => {
     let pairs = 0;
@@ -106,35 +106,52 @@ export default function Memorama() {
       )
     );
     setSelectedCards((prevSelectedCards) => [...prevSelectedCards, clickedCard]);
+
     if (selectedCards.length === 1) {
       const [firstCard] = selectedCards;
       if (firstCard.value === clickedCard.value) {
-        setTimeout(() => {
-          setCards((prevCards) =>
-            prevCards.map((card) =>
-              card.id === firstCard.id || card.id === clickedCard.id
-                ? { ...card, isMatched: true }
-                : card
-            )
-          );
-          setPlayers((prevPlayers) =>
+        setCards((prevCards) =>
+          prevCards.map((card) =>
+            card.id === firstCard.id || card.id === clickedCard.id
+              ? { ...card, isMatched: true }
+              : card
+          )
+        );
+    
+        // Aumenta el puntaje del jugador actual
+        setPlayers((prevPlayers) =>
           prevPlayers.map((player) =>
             player.isTurn ? { ...player, score: player.score + 1 } : player
           )
         );
+    
+        setTimeout(() => {
           setCards((prevCards) => {
             const allMatched = prevCards.every((card) => card.isMatched);
             if (allMatched) {
-              findWinner();
+              const updatedPlayers = players.map((player) => {
+                if (player.isTurn) {
+                  return { ...player, score: player.score + 1 };
+                }
+                return player;
+              });
+        
+              // Establece el nuevo estado de los jugadores
+              setPlayers(updatedPlayers);
+        
+              // Llama a la función findWinner después de actualizar los puntajes
+              findWinner(updatedPlayers);
+        
+              // Muestra el modal
               setShowModal(true);
             }
             return prevCards;
           });
-          
-          setSelectedCards([]);
-        }, 1000); 
-      } else {
         
+          setSelectedCards([]);
+        }, 1000);
+    
+      } else {
         setTimeout(() => {
           setCards((prevCards) =>
             prevCards.map((card) =>
@@ -143,26 +160,39 @@ export default function Memorama() {
                 : card
             )
           );
-          
+    
           setSelectedCards([]);
           switchTurns();
-        }, 1000); 
+        }, 1000);
       }
     }
   };
 
+  const findWinner = (updatedPlayers) => {
+    const gameWinner = updatedPlayers.reduce((max, player) =>
+      player.score > max.score ? player : max,
+      updatedPlayers[0]
+    );
+    const isTie = updatedPlayers.every(player => player.score === gameWinner.score);
+
+    if (isTie) {
+    setWinner("Empate");
+  } else {
+    setWinner(gameWinner);
+  }
+  };
 
   const mezclarCartas = () => {
     const cartasMezcladas = [...cards].sort(() => Math.random() - 0.5);
     setCards(cartasMezcladas);
   };
 
-
   const closeModal =(event) =>{
     if (event){
       setShowModal(false);
     }
   }
+
   const reiniciarJuego = () => {
     // Mezclar las cartas
     const cartasMezcladas = [...cards].sort(() => Math.random() - 0.5);
@@ -181,38 +211,6 @@ export default function Memorama() {
     setPlayers(jugadoresReiniciados);
     setWinner(null);
   };
-  // const reiniciarJuego = () => {
-  //   const cartasMezcladas = [...cards].sort(() => Math.random() - 0.5);
-  //   const cartasOcultas = cartasMezcladas.map(card => ({ ...card, isFlipped: false }));
-  //   setCards(cartasOcultas);
-  //   const jugadoresReiniciados = players.map((jugador) => ({
-  //     ...jugador,
-  //     score: 0,
-  //   }));
-  //   setPlayers(jugadoresReiniciados);
-  //   setWinner(null);
-  // };
-
-
-  
-  const findWinner = () => {
-    const currentPlayer = players.find(player => player.isTurn);
-    if (currentPlayer) {
-      const updatedPlayers = players.map(player =>
-        player.id === currentPlayer.id
-          ? { ...player, score: player.score + 1 }
-          : player
-      );
-      setPlayers(updatedPlayers);
-    }
-    const gameWinner = players.reduce((max, player) =>
-      player.score > max.score ? player : max,
-      players[0]
-    );
-    setWinner(gameWinner);
-  };
-
-
 
 
   // Función para cambiar el modo de juego

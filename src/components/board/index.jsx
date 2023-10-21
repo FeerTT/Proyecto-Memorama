@@ -15,7 +15,7 @@ const Board = ({ cards, onCardClick, mode }) => {
       numberOfCardsToShow = 30;
       break;
     default:
-      numberOfCardsToShow = 30; // Valor por defecto si el modo no es reconocido
+      numberOfCardsToShow = 30;
   }
   const visibleCards = cards.slice(0, numberOfCardsToShow);
   
